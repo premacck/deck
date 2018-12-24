@@ -9,10 +9,9 @@ import android.view.View
  */
 private const val SCALE_MIN = .3f
 private const val SCALE_MAX = 1f
-private const val MIN_ALPHA = .5f
 private const val SCALE = .05f
 
-class CoverFlowTransformer : ViewPager.PageTransformer {
+class CoverFlowTransformer(var minAlpha: Float) : ViewPager.PageTransformer {
 
     var paddingFactor: Float = 0.08f
 
@@ -23,7 +22,7 @@ class CoverFlowTransformer : ViewPager.PageTransformer {
         page.scaleY = realScale
         if (realPosition != 0f) {
             val scaleFactor = Math.max(SCALE_MIN, 1 - Math.abs(realPosition))
-            page.alpha = MIN_ALPHA + (scaleFactor - SCALE_MIN) / (1 - SCALE_MIN) * (1 - MIN_ALPHA)
+            page.alpha = minAlpha + (scaleFactor - SCALE_MIN) / (1 - SCALE_MIN) * (1 - minAlpha)
         }
     }
 

@@ -12,10 +12,11 @@ import android.util.TypedValue
  * Created by bloder on 25/08/17.
  */
 private const val DEFAULT_PERCENTAGE_PADDING = 8
+private const val MIN_ALPHA = .5f
 
 class Deck : ViewPager {
 
-    private val pageTransformer = CoverFlowTransformer()
+    private val pageTransformer = CoverFlowTransformer(MIN_ALPHA)
 
     constructor(context: Context) : super(context) {
         setPercentagePadding(context, DEFAULT_PERCENTAGE_PADDING)
@@ -31,6 +32,8 @@ class Deck : ViewPager {
         if (dipPaddingXmlInPixel != Integer.MAX_VALUE) {
             initProperties(context, dipPaddingXmlInPixel.toFloat())
         }
+        val minAlphaXml = typedArray.getFloat(R.styleable.Deck_min_alpha, MIN_ALPHA)
+        setMinAlpha(minAlphaXml)
         typedArray.recycle()
 
         // set the default padding if no properties from XML
@@ -73,6 +76,16 @@ class Deck : ViewPager {
                 context.resources.displayMetrics
         )
         initProperties(context, padding)
+    }
+
+    /**
+     * Set minimum alpha for left and right views
+     */
+    fun setMinAlpha(minAlpha: Float) {
+        when {
+            minAlpha < 0 || minAlpha > 1 -> throw IllegalArgumentException("Minimum alpha must be between 0 and 1")
+            else -> pageTransformer.minAlpha = minAlpha
+        }
     }
 
     private fun initProperties(context: Context, padding: Float) {
