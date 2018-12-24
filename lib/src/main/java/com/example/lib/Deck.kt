@@ -33,7 +33,9 @@ class Deck : ViewPager {
             initProperties(context, dipPaddingXmlInPixel.toFloat())
         }
         val minAlphaXml = typedArray.getFloat(R.styleable.Deck_min_alpha, MIN_ALPHA)
-        setMinAlpha(minAlphaXml)
+        if (minAlphaXml != MIN_ALPHA) {
+            setMinAlpha(minAlphaXml)
+        }
         typedArray.recycle()
 
         // set the default padding if no properties from XML
